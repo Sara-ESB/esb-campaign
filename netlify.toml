@@ -1,0 +1,19 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # These values are not secret (they also appear in public/config.js), so Netlify's secret scanner must ignore them.
+  SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL,SITE_URL,SMTP_HOST,SMTP_PORT,SMTP_USER,FROM_NAME,DAILY_CAP,HOURLY_CAP,BATCH_SIZE,OWNER_CODE_HASH"
+
+[functions]
+  node_bundler = "esbuild"
+
+[functions."scheduled-send"]
+  schedule = "* * * * *"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
